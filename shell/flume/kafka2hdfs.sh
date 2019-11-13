@@ -19,3 +19,6 @@ case $1 in
 esac
 
 # ps -ef | grep filelog2kafka.conf | grep -v grep | awk '{print $2}' | xargs kill -9
+
+
+
