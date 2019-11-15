@@ -61,7 +61,6 @@ public class EventJsonUDTF extends GenericUDTF {
                     String kv = obj.getString("kv");
 
                     forward(new String[]{en, kv});
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
