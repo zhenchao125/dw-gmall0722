@@ -11,6 +11,7 @@
     <modules>
         <module>data-producer</module>
         <module>dw-flume</module>
+        <module>dw-hive</module>
     </modules>
 
 </project>
