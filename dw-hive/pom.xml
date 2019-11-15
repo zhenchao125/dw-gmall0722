@@ -12,7 +12,7 @@
     <artifactId>dw-hive</artifactId>
     <properties>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
-        <hive.version>1.2.1</hive.version>
+        <hive.version>2.3.4</hive.version>
     </properties>
 
     <dependencies>
