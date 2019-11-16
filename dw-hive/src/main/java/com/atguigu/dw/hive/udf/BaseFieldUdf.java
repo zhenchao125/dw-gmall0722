@@ -28,7 +28,9 @@ public class BaseFieldUdf extends UDF {
                 result = st;
                 break;
             case "et":
-                result = jsonObject.getString("et");
+                if (jsonObject.has("et")) {
+                    result = jsonObject.getString("et");
+                }
                 break;
             default:  // 取公共字段
                 JSONObject cm = jsonObject.getJSONObject("cm");
