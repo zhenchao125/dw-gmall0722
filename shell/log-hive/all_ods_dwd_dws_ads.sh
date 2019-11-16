@@ -2,6 +2,7 @@
 
 log_hive=/opt/dw0722/log-hive
 
+
 # 数据导入到 ods 层
 ${log_hive}/ods_log.sh $1
 # 启动日志导入到 dwd 层
