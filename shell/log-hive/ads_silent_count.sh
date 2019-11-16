@@ -27,3 +27,5 @@ from(
 $hive -e "$sql"
 
 
+
+
