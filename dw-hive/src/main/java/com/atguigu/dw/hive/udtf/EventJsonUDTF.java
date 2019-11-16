@@ -65,9 +65,7 @@ public class EventJsonUDTF extends GenericUDTF {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     @Override
