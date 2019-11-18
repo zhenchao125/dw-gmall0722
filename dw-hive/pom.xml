@@ -22,6 +22,8 @@
             <artifactId>hive-exec</artifactId>
             <version>${hive.version}</version>
         </dependency>
+
+
     </dependencies>
 
     <build>

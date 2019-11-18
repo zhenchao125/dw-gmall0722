@@ -374,7 +374,7 @@ select  -- 3日留存
     1 retention_day
 from dws_new_mid_day  nm
 join dws_uv_detail_day dd
-on nm.mid_id=dd.mid_id
+on nm.mid_id=dd.mid_idods_event_log
 where dd.dt='2019-11-15' and nm.create_date=date_add('2019-11-15', -1)
 
 -- ads留存
@@ -646,6 +646,7 @@ insert overwrite table ads_user_total_count
 partition(dt='2019-11-12')
 select
   if(cd.mid_id is null, tc.mid_id, cd.mid_id),
+  
   if(cd.subtotal is null , 0, cd.subtotal),
   if(tc.total is null, 0, tc.total) + if(cd.subtotal is null , 0, cd.subtotal)
 from (
@@ -654,14 +655,7 @@ from (
 full join(
   select * from ads_user_total_count where tc.dt=date_add('2019-11-12', -1);
 ) tc
-on cd.mid_id=tc.mid_id
-
-
-
-
-
-
-
+on cd.mid_id=tc.mid_id;
 
 
 
