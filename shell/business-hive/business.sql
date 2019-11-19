@@ -64,4 +64,46 @@ from(
 on t1.dt=t2.dt
 
 
+/* 品牌复购率 */
 
+with
+tmp_detail as
+(
+    select
+        user_id,
+        sku_id,
+        sum(sku_num)  sku_num,
+        count(*) order_count,
+        sum(order_price * sku_num) order_amount
+    from dwd_order_detail
+    where dt='2019-11-19'
+    group by user_id, sku_id
+)
+
+insert overwrite table dws_sale_detail_daycount partition(dt='2019-11-19')
+select
+    t1.user_id,
+    t1.sku_id,
+    u.gender,
+    months_between('2019-02-10', u.birthday)/12  age,
+    u.user_level,
+    price,
+    sku_name,
+    tm_id,
+    category3_id,
+    category2_id,
+    category1_id,
+    category3_name,
+    category2_name,
+    category1_name,
+    spu_id,
+    t1.sku_num,
+    t1.order_count,
+    t1.order_amount
+from(
+    select * from tmp_detail
+)t1
+join dwd_user_info u
+on t1.user_id=u.id and u.dt='2019-11-19'
+join dwd_sku_info sku
+on t1.sku_id=sku.id and sku.dt='2019-11-19'
