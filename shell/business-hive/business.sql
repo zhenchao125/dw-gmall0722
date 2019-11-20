@@ -107,3 +107,75 @@ join dwd_user_info u
 on t1.user_id=u.id and u.dt='2019-11-19'
 join dwd_sku_info sku
 on t1.sku_id=sku.id and sku.dt='2019-11-19'
+
+/*每个品牌下每个一级品类的复购率
+
+1.
+
+
+*/
+
+with
+tmp_count as(
+    select  -- 统计每个用户, 对每个品牌, 下的一级品的下单次数
+        user_id,
+        sku_tm_id,
+        sku_category1_id,
+        max(sku_category1_name) sku_category1_name,
+        sum(order_count) sum_order_count
+    from dws_sale_detail_daycount
+    where date_format('2019-11-20', 'yyyy-MM')=date_format(dt, 'yyyy-MM')
+    group by user_id, sku_tm_id, sku_category1_id
+)
+
+select
+    sku_tm_id,
+    sku_category1_id,
+    max(sku_category1_name),
+    sum(if(sum_order_count > 0, 1, 0)),  -- 购买过商品的人数
+    sum(if(sum_order_count > 1, 1, 0)),  -- 购买过2次及以上商品的人数
+    sum(if(sum_order_count > 1, 1, 0)) / sum(if(sum_order_count > 0, 1, 0)) * 100,
+    sum(if(sum_order_count > 2, 1, 0)),   -- 购买过3次及以上商品的人数
+    sum(if(sum_order_count > 2, 1, 0)) / sum(if(sum_order_count > 0, 1, 0)) * 100
+from tmp_count
+group by sku_tm_id, sku_category1_id
+
+
+
+/*各等级用户对应的复购率前十的商品排行*/
+use gmall;
+with
+tmp_count as(
+    select
+        user_level,
+        user_id,
+        sku_id,
+        sum(order_count) sum_order_count
+    from dws_sale_detail_daycount
+    where date_format('2019-11-20', 'yyyy-MM')=date_format(dt, 'yyyy-MM')
+    group by user_level, user_id, sku_id
+
+)
+select
+    user_level, sku_id,
+    c1,
+    c2,
+    c3
+from(
+    select
+        user_level, sku_id,
+        sum(if(sum_order_count >0 , 1, 0)) c1,
+        sum(if(sum_order_count >1 , 1, 0)) c2,
+        sum(if(sum_order_count >1 , 1, 0)) / sum(if(sum_order_count >0 , 1, 0)) c3,
+        rank() over(partition by user_level order by sum(if(sum_order_count >1 , 1, 0)) / sum(if(sum_order_count >0 , 1, 0)) desc ) rk
+    from tmp_count
+    group by user_level, sku_id
+)tmp
+where rk<=10
+
+
+
+
+
+
+
