@@ -191,6 +191,58 @@ on dua.user_id=aulp.user_id
 
 
 
+/*拉链表
+
+先把需要变化的给更改了
+*/
+use gmall;
+insert overwrite table dwd_order_info_his_tmp
+select  -- 开始: 把拉链表中没有更新的和需要更新的给保留下来
+    t1.id,
+    t1.total_amount,
+    t1.order_status,
+    t1.user_id,
+    t1.payment_way,
+    t1.out_trade_no,
+    t1.create_time,
+    t1.operate_time,
+    t1.start_date,
+    if(t2.id is null, t1.end_date, date_add('2019-11-20',-1))
+from dwd_order_info_his t1
+left join
+(
+    select
+        id,
+        total_amount,
+        order_status,
+        user_id,
+        payment_way,
+        out_trade_no,
+        create_time,
+        operate_time
+    from dwd_order_info
+    where dt='2019-11-20'
+) t2
+on t1.id=t2.id and t1.end_date='9999-99-99'
+
+union all
+select
+    id,
+    total_amount,
+    order_status,
+    user_id,
+    payment_way,
+    out_trade_no,
+    create_time,
+    operate_time,
+    '2019-11-20',
+    '9999-99-99'
+from dwd_order_info
+where dt='2019-11-20'
 
 
+
+
+insert overwrite table dwd_order_info_his
+select * from dwd_order_info_his_tmp;
 

@@ -1,4 +1,4 @@
 type=command
 do_date=${dt}
 dependencies=import
-command=/opt/dw0722/business-hive/ods_db.sh $do_date
+command=/opt/dw0722/business-hive/ods_db.sh ${do_date}
