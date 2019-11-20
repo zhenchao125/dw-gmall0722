@@ -174,6 +174,21 @@ from(
 where rk<=10
 
 
+/*每个用户最近一次购买时间
+
+用户宽表
+*/
+
+insert overwrite table ads_user_last_pay
+select
+    if(dua.user_id is not null, dua.user_id, aulp.user_id),
+    if(dua.user_id is not null, '2019-11-19', aulp.pay_date)
+from (
+    select * from dws_user_action where dt='2019-11-19' and payment_count > 0
+) dua
+full join ads_user_last_pay aulp
+on dua.user_id=aulp.user_id
+
 
 
 

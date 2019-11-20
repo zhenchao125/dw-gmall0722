@@ -1,0 +1,4 @@
+type=command
+do_date=${dt}
+dependencies=ods
+command=/opt/dw0722/business-hive/dwd_db.sh $do_date

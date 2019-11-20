@@ -1,0 +1,4 @@
+type=command
+do_date=${dt}
+dependencies=dwd
+command=/opt/dw0722/business-hive/dws_user_action_wide.sh $do_date

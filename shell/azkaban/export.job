@@ -1,0 +1,3 @@
+type=command
+dependencies=ads
+command=/opt/dw0722/sqoop/sqoop_export.sh
